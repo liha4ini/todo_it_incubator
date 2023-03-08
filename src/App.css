@@ -1,8 +1,8 @@
 .App {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    /* flex-direction: row; */
+    justify-content: center;
     align-items: center;
-    width: 1000px;
+    width: 100vw;
     height: 100vh;
 }

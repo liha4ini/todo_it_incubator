@@ -1,3 +1,6 @@
+import './Todolist.css';
+
+
 export type TaskType = {
   id: number;
   title: string;
@@ -6,12 +9,13 @@ export type TaskType = {
 
 type PropsType = {
   title: string;
-  tasks: Array<TaskType>;
+  tasks: Array<TaskType>
+  deleteTask: Function
 };
 
 export default function Todolist(props: PropsType) {
   return (
-    <div>
+    <div className='card_wrapper'>
       <h3>{props.title}</h3>
       <div>
         <input />
@@ -23,13 +27,10 @@ export default function Todolist(props: PropsType) {
             <li>
               <input type="checkbox" checked={i.isDone} />
               <span>{i.title}</span>
-              <button>x</button>
+              <button onClick={() => {props.deleteTask(i.id)}}>x</button>
             </li>
           );
         })}
-        {/* <li><input type="checkbox" checked={props.tasks[0].isDone} /><span>{props.tasks[0].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[1].isDone} /><span>{props.tasks[1].title}</span></li>
-                <li><input type="checkbox" checked={props.tasks[2].isDone} /><span>{props.tasks[2].title}</span></li> */}
       </ul>
       <div>
         <button>All</button>
