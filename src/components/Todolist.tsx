@@ -16,23 +16,23 @@ type PropsType = {
 export default function Todolist(props: PropsType) {
   return (
     <div className='card_wrapper'>
-      <h3>{props.title}</h3>
-      <div>
-        <input />
-        <button>+</button>
+      <div className='title'>{props.title}</div>
+      <div className='input_block'>
+        <input placeholder={'Add a New Task'}  />
+        <button>Add</button>
       </div>
-      <ul>
+      <ul className='tasks_block'>
         {props.tasks.map((i) => {
           return (
-            <li>
-              <input type="checkbox" checked={i.isDone} />
+            <li className='task_item'>
+              <input type="checkbox" checked={i.isDone}/>
               <span>{i.title}</span>
-              <button onClick={() => {props.deleteTask(i.id)}}>x</button>
+              <button onClick={() => {props.deleteTask(i.id)}}>Del</button>
             </li>
           );
         })}
       </ul>
-      <div>
+      <div className='filterButton_block'>
         <button>All</button>
         <button>Active</button>
         <button>Completed</button>
