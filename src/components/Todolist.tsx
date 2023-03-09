@@ -11,6 +11,7 @@ type PropsType = {
   title: string;
   tasks: Array<TaskType>
   deleteTask: Function
+  placeholder: string
 };
 
 export default function Todolist(props: PropsType) {
@@ -18,7 +19,7 @@ export default function Todolist(props: PropsType) {
     <div className='card_wrapper'>
       <div className='title'>{props.title}</div>
       <div className='input_block'>
-        <input placeholder={'Add a New Task'}  />
+        <input placeholder={props.placeholder}  />
         <button>Add</button>
       </div>
       <ul className='tasks_block'>
