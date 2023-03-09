@@ -7,8 +7,8 @@ ul, ul li {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 300px;
-    min-height: 400px;
+    width: 350px;
+    min-height: 450px;
     border: 1px solid rgb(189, 175, 175);
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -28,12 +28,13 @@ ul, ul li {
     text-align: center;
     font-size: 25px;
     font-weight: 600;
-    color: rgb(74, 66, 66);
+    color: rgb(103, 88, 88);
     border-bottom: 1px solid rgb(144, 126, 126);
-    padding-top: 10px;
+    padding-top: 5px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 10px;
     transition: 0.5s;
+    background-color: rgb(189, 212, 236);
 }
 
 .title:hover {
@@ -91,16 +92,17 @@ ul, ul li {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 70%;
+    justify-content: flex-end;
+    min-height: 200px;
     width: 100%;
-    padding-right: 40px;
+    /* padding-right: 40px; */
 }
 
 .task_item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 35px;
+    height: 40px;
     width: 100%;
     border-bottom: 1px solid rgb(144, 126, 126);
     margin-bottom: 3px;
