@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { FilterValuesType } from '../App';
 import './Todolist.css';
 
@@ -16,6 +16,7 @@ type PropsType = {
   placeholder: string
   changeFilter: (value: FilterValuesType) => void
   addTask: (title: string) => void
+  changeStatus: (taskId: string, isDone: boolean) => void
 };
 
 export default function Todolist(props: PropsType) {
@@ -40,9 +41,16 @@ export default function Todolist(props: PropsType) {
         </div>
         <ul className='tasks_block'>
             {props.tasks.map((i) => {
+            const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                props.changeStatus(i.id, e.currentTarget.checked)
+            }
             return (
                 <li key={i.id} className='task_item'>
-                    <input type="checkbox" checked={i.isDone}/>
+                    <input className='checkbox'
+                           type="checkbox"
+                           checked={i.isDone}
+                           onChange={onChangeHandler}
+                     />
                     <span>{i.title}</span>
                     <button onClick={() => {props.deleteTask(i.id)}}>Del</button>
                 </li>

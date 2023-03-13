@@ -47,6 +47,14 @@ function App() {
         setTasks(newTasks);
     }
 
+    function changeStatus(taskId: string, isDone: boolean) {
+        let task = tasks.find(t => t.id === taskId);
+        if (task) {
+            task.isDone = isDone;
+        }
+        setTasks([...tasks])
+    }
+
     function changeFilter(value: FilterValuesType) {
         setFilter(value);
     }
@@ -76,6 +84,7 @@ function App() {
                       changeFilter={changeFilter}
                       placeholder='Add a New Task'
                       addTask={addTask}
+                      changeStatus={changeStatus}
             />
             {/* <Todolist title='What song to listen'
                       tasks={songs} 
