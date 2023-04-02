@@ -8,7 +8,7 @@ ul, ul li {
     justify-content: space-between;
     align-items: center;
     width: 350px;
-    min-height: 450px;
+    height: 450px;
     border: 1px solid rgb(189, 175, 175);
     border-radius: 10px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -86,7 +86,7 @@ ul, ul li {
 .input_block input::placeholder {
     color: #212529;
     opacity: 0.4;
-  }
+}
 
 .tasks_block {
     display: flex;
@@ -95,7 +95,6 @@ ul, ul li {
     justify-content: flex-end;
     min-height: 200px;
     width: 100%;
-    /* padding-right: 40px; */
 }
 
 .task_item {
@@ -153,7 +152,7 @@ ul, ul li {
     width: 100%;
 }
 
-.filterButton_block button {
+.filterButton_block .filterButton {
     width: 90px;
     height: 30px;
     cursor: pointer;
@@ -165,7 +164,7 @@ ul, ul li {
     transition: 0.5s;
 }
 
-.filterButton_block button:hover {
+.filterButton_block .filterButton:hover {
     transform: scale(1.1);
     background-color: rgb(142, 226, 190);
 }
