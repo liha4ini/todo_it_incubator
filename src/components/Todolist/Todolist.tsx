@@ -13,6 +13,8 @@ type TodolistPropsType = {
     deleteTask: (id: string) => void
     changeFilter: (value: FilterValuesType) => void
     addTask: (newTitle: string) => void
+    changeTaskStatus: (taskId: string, checkedValue: boolean) => void
+    filterTasks: FilterValuesType
 }
 
 export type TasksType = {
@@ -23,33 +25,40 @@ export type TasksType = {
 
 export default function Todolist(props: TodolistPropsType) {
 
-    const {title, data, deleteTask, changeFilter, addTask} = props;
+    const {title, data, deleteTask, changeFilter, addTask, changeTaskStatus, filterTasks, ...restProps} = props;
 
     const [inputValue, setInputValue] = useState('')
-    console.log(inputValue)
+    const [error, setError] = useState<string | null>(null)
 
     const removeTaskHandler = (id: string) => {
         deleteTask(id)
     }
 
     const addTaskHandler = () => {
-        addTask(inputValue)
-        setInputValue('')
+        if (inputValue.trim() !== '') {
+            addTask(inputValue)
+            setInputValue('')
+        } else {
+            setError('Title is required')
+        }
+
     }
 
-    // const onEnterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-    //     if (e.key === 'Enter') {
-    //         addTask(inputValue)
-    //         setInputValue('')
-    //     }
-    // }
+    const onEnterHandler = () => {
+        addTask(inputValue)
+    }
 
     const todoItems = data.map(i => {
+
+        const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+            changeTaskStatus(i.id, e.currentTarget.checked)
+        }
         return (
-            <li key={i.id} className='task_item'>
+            <li key={i.id} className={i.isDone ? 'task_item is_done' : 'task_item'}>
                 <input className='checkbox'
                        type="checkbox"
                        checked={i.isDone}
+                       onChange={changeTaskStatusHandler}
                 />
                 <span>{i.title}</span>
                 <button onClick={() => removeTaskHandler(i.id)}>Del</button>
@@ -79,15 +88,14 @@ export default function Todolist(props: TodolistPropsType) {
                 {title}
             </motion.div>
             <div className='input_block'>
-                {/*<input*/}
-                {/*    value={inputValue}*/}
-                {/*    onChange={changeInputValueHandler}*/}
-                {/*    onKeyPress={onEnterHandler}*/}
-                {/*/>*/}
                 <MultiInput
                     inputValue={inputValue}
                     setInputValue={setInputValue}
+                    // inputClasses={error ? 'error' : 'input'}
+                    inputClasses={'input'}
+                    callBack={onEnterHandler}
                 />
+                {/*{error && <div className={'error-message'}>{error}</div>}*/}
                 <MultiButton
                     callBack={addTaskHandler}
                     className={''}
@@ -112,9 +120,24 @@ export default function Todolist(props: TodolistPropsType) {
                     delay: 0.5
                 }}
             >
-                <MultiButton callBack={() => changeFilter('all')} className={'filterButton'}>All</MultiButton>
-                <MultiButton callBack={() => changeFilter('active')} className={'filterButton'}>Active</MultiButton>
-                <MultiButton callBack={() => changeFilter('completed')} className={'filterButton'}>Completed</MultiButton>
+                <MultiButton
+                    callBack={() => changeFilter('all')}
+                    className={filterTasks === 'all' ? 'active_filter_button' : 'filterButton'}
+                >
+                    All
+                </MultiButton>
+                <MultiButton
+                    callBack={() => changeFilter('active')}
+                    className={filterTasks === 'active' ? 'active_filter_button' : 'filterButton'}
+                >
+                    Active
+                </MultiButton>
+                <MultiButton
+                    callBack={() => changeFilter('completed')}
+                    className={filterTasks === 'completed' ? 'active_filter_button' : 'filterButton'}
+                >
+                    Completed
+                </MultiButton>
             </motion.div>
         </div>
     );

@@ -66,7 +66,7 @@ ul, ul li {
     background-color: rgb(142, 226, 190);
 }
 
-.input_block input {
+.input_block .input {
     width: 200px;
     height: 30px;
     border: 1px solid #bdbdbd;
@@ -76,14 +76,14 @@ ul, ul li {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.input_block input:focus {
+.input_block .input:focus {
     color: #212529;
     background-color: #fff;
     border-color: #bdbdbd;
     outline: 0;
 }
 
-.input_block input::placeholder {
+.input_block .input::placeholder {
     color: #212529;
     opacity: 0.4;
 }
@@ -167,4 +167,34 @@ ul, ul li {
 .filterButton_block .filterButton:hover {
     transform: scale(1.1);
     background-color: rgb(142, 226, 190);
+}
+
+.error {
+    width: 200px;
+    height: 30px;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    padding-left: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border: 2px solid red;
+}
+
+.error-message {
+    color: red;
+}
+
+.active_filter_button {
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    color: rgb(74, 66, 66);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.5s;
+    background-color: rgb(142, 226, 190);
+}
+
+.is_done {
+    opacity: 0.7;
 }

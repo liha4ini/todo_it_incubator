@@ -35,6 +35,14 @@ function App() {
         setFilterTasks(value)
     }
 
+    const changeTaskStatus = (taskId: string, checkedValue: boolean) => {
+        const task = tasks.find(el => el.id === taskId)
+        if (task) {
+            task.isDone = checkedValue
+        }
+        setTasks([...tasks])
+    }
+
     let getFilterTasks = tasks;
 
     if (filterTasks === 'completed') {
@@ -47,15 +55,22 @@ function App() {
 
     return (
         <div className="App">
-            <Header />
+            <Header/>
             <div className='main_content'
-                 style={{ backgroundImage: `url(${bg_image})`, backgroundRepeat: 'no-repeat', backgroundSize: "cover" }}>
+                 style={{
+                     backgroundImage: `url(${bg_image})`,
+                     backgroundRepeat: 'no-repeat',
+                     backgroundSize: "cover"
+                 }}
+            >
                 <Todolist
                     title='What to learn'
                     data={getFilterTasks}
                     deleteTask={deleteTask}
                     changeFilter={changeFilter}
                     addTask={addTask}
+                    filterTasks={filterTasks}
+                    changeTaskStatus={changeTaskStatus}
                 />
             </div>
 

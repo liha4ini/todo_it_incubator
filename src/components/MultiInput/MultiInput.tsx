@@ -2,30 +2,35 @@ import React, {ChangeEvent, KeyboardEvent, FC} from 'react';
 
 
 type MultiInputPropsType = {
+    inputClasses?: string
     inputValue: string
     setInputValue: (inputValue: string) => void
+    inputType?: string
+    callBack: () => void
 }
 
 export const MultiInput: FC<MultiInputPropsType> = (props) => {
 
-    const {inputValue, setInputValue} = props
+    const {inputValue, setInputValue, inputClasses, inputType, callBack, ...restProps} = props
 
     const onChangeInputValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value)
     }
 
-    const onEnterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            addTask(inputValue)
+            callBack()
             setInputValue('')
         }
     }
 
     return (
         <div>
-            <input value={inputValue}
-                   onChange={onChangeInputValueHandler}
-                   // onKeyPress={onEnterHandler}
+            <input
+                className={inputClasses}
+                value={inputValue}
+                onChange={onChangeInputValueHandler}
+                onKeyPress={onKeyPressHandler}
             />
         </div>
     );
