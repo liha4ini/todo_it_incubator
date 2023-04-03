@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import Todolist, {TasksType} from './components/Todolist/Todolist';
 
-import './App.css';
-import bg_image from './assets/bg_image3.jpg';
-
 import {v1} from 'uuid';
 import Header from "./components/Header/Header";
+
+import './App.css';
+import bg_image from './assets/bg_image3.jpg';
+import {ChangeBackgroundModal} from "./components/ChangeBackgroundModal/ChangeBackgroundModal";
+import bg_images from './constants/index';
 
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
@@ -21,6 +23,8 @@ function App() {
 
     const [tasks, setTasks] = useState<TasksType[]>(initialTasks)
     const [filterTasks, setFilterTasks] = useState<FilterValuesType>('all')
+    const [modalActive, setModalActive] = useState(false)
+
 
     const deleteTask = (id: string) => {
         setTasks(tasks.filter(i => i.id !== id))
@@ -35,12 +39,15 @@ function App() {
         setFilterTasks(value)
     }
 
-    const changeTaskStatus = (taskId: string, checkedValue: boolean) => {
-        const task = tasks.find(el => el.id === taskId)
-        if (task) {
-            task.isDone = checkedValue
-        }
-        setTasks([...tasks])
+    // const changeTaskStatus = (taskId: string, checkedValue: boolean) => {
+    //     const task = tasks.find(el => el.id === taskId)
+    //     if (task) {
+    //         task.isDone = checkedValue
+    //     }
+    //
+
+    const changeTaskStatus = (id: string) => {
+        setTasks(tasks.map(el => el.id === id ? {...el, isDone: !el.isDone} : el))
     }
 
     let getFilterTasks = tasks;
@@ -55,7 +62,10 @@ function App() {
 
     return (
         <div className="App">
-            <Header/>
+            <Header
+                modalActive={modalActive}
+                setModalActive={setModalActive}
+            />
             <div className='main_content'
                  style={{
                      backgroundImage: `url(${bg_image})`,
@@ -63,6 +73,18 @@ function App() {
                      backgroundSize: "cover"
                  }}
             >
+                <ChangeBackgroundModal
+                    modalActive={modalActive}
+                    setModalActive={setModalActive}
+                >
+                    {bg_images.bg_images.map(img => {
+                        return (
+                            <div key={img.id}>
+                                <img src={img.image}/>
+                            </div>
+                        )
+                    })}
+                </ChangeBackgroundModal>
                 <Todolist
                     title='What to learn'
                     data={getFilterTasks}
@@ -73,8 +95,6 @@ function App() {
                     changeTaskStatus={changeTaskStatus}
                 />
             </div>
-
-
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 
 import {MultiButton} from "../MultiButton/MultiButton";
 
@@ -10,9 +10,20 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import SearchIcon from '@material-ui/icons/Search';
+import BurstModeIcon from '@material-ui/icons/BurstMode';
 
 
-const Header = () => {
+type HeaderPropsType = {
+    modalActive: boolean
+    setModalActive: (modalActive: boolean) => void
+}
+
+const Header: FC<HeaderPropsType> = (props) => {
+
+    const {modalActive, setModalActive} = props
+
+    const [bgImage, setBgImage] = useState('')
+
     return (
         <div className='header'>
             <div className='header_left_section'>
@@ -59,6 +70,14 @@ const Header = () => {
                 </MultiButton>
             </div>
             <div className='header_right_section'>
+                <MultiButton
+                    callBack={() => {setModalActive(true)
+                    }}
+                    className={'header_button create_button btn_bg'}
+                >
+                    <span>Change Background</span>
+                    <span><BurstModeIcon style={{marginTop: '3px', marginLeft: '5px', width: '30px', height: '30px'}}/></span>
+                </MultiButton>
                 <MultiButton
                     callBack={() => {
                     }}

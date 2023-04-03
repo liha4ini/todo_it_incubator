@@ -66,4 +66,15 @@
     background-color: transparent;
     cursor: pointer;
     color: #ffffff;
+    width: 40px;
+    height: 40px;
+}
+
+.header_button_right:hover {
+    background-color: #5f6464;
+    border-radius: 50px;
+}
+
+.btn_bg {
+    margin-top: 0;
 }
