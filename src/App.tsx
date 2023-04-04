@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Todolist, {TasksType} from './components/Todolist/Todolist';
 
 import {v1} from 'uuid';
@@ -34,6 +34,12 @@ function App() {
     const [modalActive, setModalActive] = useState(false)
     const [bgImage, setBgImage] = useState<string>(bg_images[8].image)
     console.log(bgImage)
+    useEffect(() => {
+        const SavedBG = localStorage.getItem('savedImageBackground')
+        if (SavedBG){
+            setBgImage(SavedBG)
+        }
+    }, [])
 
     const deleteTask = (id: string) => {
         setTasks(tasks.filter(i => i.id !== id))

@@ -1,7 +1,6 @@
-import React, {FC, ReactNode, useState} from 'react';
+import React, {FC, ReactNode, useEffect, useState} from 'react';
 
 import {bg_images} from '../../constants';
-
 import './ChangeBackgroundModal.css';
 
 type ChangeBackgroundModalPropsType = {
@@ -14,7 +13,9 @@ type ChangeBackgroundModalPropsType = {
 
 export const ChangeBackgroundModal: FC<ChangeBackgroundModalPropsType> = (props) => {
 
-    const {modalActive, setModalActive, children, setBgImage} = props
+    const {modalActive, setModalActive, children, setBgImage, ...restProps} = props
+
+
 
     const images = bg_images.map(img => {
 
@@ -22,6 +23,8 @@ export const ChangeBackgroundModal: FC<ChangeBackgroundModalPropsType> = (props)
             const image  = bg_images.find(el => el.id === imgID)
             console.log(image)
             if (image) {
+                setBgImage(image.image)
+                localStorage.setItem('savedImageBackground', image.image)
                 setBgImage(image.image)
             }
 
