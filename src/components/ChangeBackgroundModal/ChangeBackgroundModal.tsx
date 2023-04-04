@@ -1,31 +1,45 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 
-import bg_images from '../../constants/index';
+import {bg_images} from '../../constants';
 
 import './ChangeBackgroundModal.css';
 
 type ChangeBackgroundModalPropsType = {
     modalActive: boolean
     setModalActive: (active: boolean) => void
-    children: ReactNode
+    children?: ReactNode
+    setBgImage: (bgImage: any) => void
 }
+
 
 export const ChangeBackgroundModal: FC<ChangeBackgroundModalPropsType> = (props) => {
 
-    const {modalActive, setModalActive, children} = props
+    const {modalActive, setModalActive, children, setBgImage} = props
 
-    const images = bg_images.bg_images.map(img => {
+    const images = bg_images.map(img => {
+
+        const onClickImageHandler = (imgID: string) => {
+            const image  = bg_images.find(el => el.id === imgID)
+            console.log(image)
+            if (image) {
+                setBgImage(image.image)
+            }
+
+        }
+
         return (
-            <span key={img.id}>
-                {img.image}
-            </span>
+            <li className='img_item' key={img.id}>
+                <img onClick={() => onClickImageHandler(img.id)} src={img.image} alt="image"/>
+            </li>
         )
     })
 
     return (
         <div className={modalActive ? 'modal active' : 'modal'} onClick={() => setModalActive(false)}>
-            <div className={modalActive ? 'modal_content active' : 'modal_content'} onClick={e => e.stopPropagation()}>
-                {children}
+            <div className={modalActive ? 'modal_content active' : 'modal_content'} >
+                <ul className='images_wrapper'>
+                    {images}
+                </ul>
             </div>
 
         </div>

@@ -5,12 +5,20 @@ import {v1} from 'uuid';
 import Header from "./components/Header/Header";
 
 import './App.css';
-import bg_image from './assets/bg_image3.jpg';
 import {ChangeBackgroundModal} from "./components/ChangeBackgroundModal/ChangeBackgroundModal";
-import bg_images from './constants/index';
+import {bg_images} from './constants';
 
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
+
+// export type BackgroundImagesItemsType = {
+//     id: string
+//     image: string
+// }
+//
+// export type BackgroundImagesType = {
+//     images: BackgroundImagesItemsType
+// }
 
 function App() {
 
@@ -24,7 +32,8 @@ function App() {
     const [tasks, setTasks] = useState<TasksType[]>(initialTasks)
     const [filterTasks, setFilterTasks] = useState<FilterValuesType>('all')
     const [modalActive, setModalActive] = useState(false)
-
+    const [bgImage, setBgImage] = useState<string>(bg_images[8].image)
+    console.log(bgImage)
 
     const deleteTask = (id: string) => {
         setTasks(tasks.filter(i => i.id !== id))
@@ -39,16 +48,23 @@ function App() {
         setFilterTasks(value)
     }
 
-    // const changeTaskStatus = (taskId: string, checkedValue: boolean) => {
-    //     const task = tasks.find(el => el.id === taskId)
-    //     if (task) {
-    //         task.isDone = checkedValue
-    //     }
-    //
-
     const changeTaskStatus = (id: string) => {
         setTasks(tasks.map(el => el.id === id ? {...el, isDone: !el.isDone} : el))
     }
+
+    // const onChangeBackgroundHandler = (imgID: string, bgI: string) => {
+    //     let image = bg_images.filter(img => img.id === imgID)
+        // setBgImage(image[id].image)
+        // const createCss = (id: number, bgI: string) => {
+        //     if (id === activeLinkId) {
+        //         return {
+        //             backgroundImage: `url(${bgI})`,
+        //             backgroundSize: "cover",
+        //             backgroundRepeat: "no-repeat"
+        //         };
+        //     } else return {};
+        // };
+    // }
 
     let getFilterTasks = tasks;
 
@@ -68,7 +84,8 @@ function App() {
             />
             <div className='main_content'
                  style={{
-                     backgroundImage: `url(${bg_image})`,
+                     // backgroundImage: `url(${bg_image})`,
+                     backgroundImage: `url(${bgImage})`,
                      backgroundRepeat: 'no-repeat',
                      backgroundSize: "cover"
                  }}
@@ -76,15 +93,8 @@ function App() {
                 <ChangeBackgroundModal
                     modalActive={modalActive}
                     setModalActive={setModalActive}
-                >
-                    {bg_images.bg_images.map(img => {
-                        return (
-                            <div key={img.id}>
-                                <img src={img.image}/>
-                            </div>
-                        )
-                    })}
-                </ChangeBackgroundModal>
+                    setBgImage={setBgImage}
+                />
                 <Todolist
                     title='What to learn'
                     data={getFilterTasks}
