@@ -30,10 +30,9 @@ function App() {
     ]
 
     const [tasks, setTasks] = useState<TasksType[]>(initialTasks)
-    const [filterTasks, setFilterTasks] = useState<FilterValuesType>('all')
     const [modalActive, setModalActive] = useState(false)
     const [bgImage, setBgImage] = useState<string>(bg_images[8].image)
-    console.log(bgImage)
+
     useEffect(() => {
         const SavedBG = localStorage.getItem('savedImageBackground')
         if (SavedBG){
@@ -50,36 +49,8 @@ function App() {
         setTasks([newTask, ...tasks])
     }
 
-    const changeFilter = (value: FilterValuesType) => {
-        setFilterTasks(value)
-    }
-
     const changeTaskStatus = (id: string) => {
         setTasks(tasks.map(el => el.id === id ? {...el, isDone: !el.isDone} : el))
-    }
-
-    // const onChangeBackgroundHandler = (imgID: string, bgI: string) => {
-    //     let image = bg_images.filter(img => img.id === imgID)
-        // setBgImage(image[id].image)
-        // const createCss = (id: number, bgI: string) => {
-        //     if (id === activeLinkId) {
-        //         return {
-        //             backgroundImage: `url(${bgI})`,
-        //             backgroundSize: "cover",
-        //             backgroundRepeat: "no-repeat"
-        //         };
-        //     } else return {};
-        // };
-    // }
-
-    let getFilterTasks = tasks;
-
-    if (filterTasks === 'completed') {
-        getFilterTasks = tasks.filter(i => i.isDone)
-    }
-
-    if (filterTasks === 'active') {
-        getFilterTasks = tasks.filter(i => !i.isDone)
     }
 
     return (
@@ -90,7 +61,6 @@ function App() {
             />
             <div className='main_content'
                  style={{
-                     // backgroundImage: `url(${bg_image})`,
                      backgroundImage: `url(${bgImage})`,
                      backgroundRepeat: 'no-repeat',
                      backgroundSize: "cover"
@@ -103,11 +73,9 @@ function App() {
                 />
                 <Todolist
                     title='What to learn'
-                    data={getFilterTasks}
+                    tasks={tasks}
                     deleteTask={deleteTask}
-                    changeFilter={changeFilter}
                     addTask={addTask}
-                    filterTasks={filterTasks}
                     changeTaskStatus={changeTaskStatus}
                 />
             </div>

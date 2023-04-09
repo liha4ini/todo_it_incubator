@@ -9,12 +9,10 @@ import {MultiInput} from "../MultiInput/MultiInput";
 
 type TodolistPropsType = {
     title: string
-    data: TasksType[]
+    tasks: TasksType[]
     deleteTask: (id: string) => void
-    changeFilter: (value: FilterValuesType) => void
     addTask: (newTitle: string) => void
     changeTaskStatus: (taskId: string, checkedValue: boolean) => void
-    filterTasks: FilterValuesType
 }
 
 export type TasksType = {
@@ -25,10 +23,38 @@ export type TasksType = {
 
 export default function Todolist(props: TodolistPropsType) {
 
-    const {title, data, deleteTask, changeFilter, addTask, changeTaskStatus, filterTasks, ...restProps} = props;
+    const {title, tasks, deleteTask, addTask, changeTaskStatus, ...restProps} = props;
 
     const [inputValue, setInputValue] = useState('')
     const [error, setError] = useState<string | null>(null)
+    const [filterTasks, setFilterTasks] = useState<FilterValuesType>('all')
+
+    const changeFilter = (value: FilterValuesType) => {
+        setFilterTasks(value)
+    }
+
+    // const filteredTasks = () => {
+    //     let getFilterTasks = tasks;
+    //
+    //     if (filterTasks === 'completed') {
+    //         getFilterTasks = tasks.filter(i => i.isDone)
+    //     }
+    //
+    //     if (filterTasks === 'active') {
+    //         getFilterTasks = tasks.filter(i => !i.isDone)
+    //     }
+    //     return getFilterTasks
+    // }
+
+    let getFilterTasks = tasks;
+
+    if (filterTasks === 'completed') {
+        getFilterTasks = tasks.filter(i => i.isDone)
+    }
+
+    if (filterTasks === 'active') {
+        getFilterTasks = tasks.filter(i => !i.isDone)
+    }
 
     const removeTaskHandler = (id: string) => {
         deleteTask(id)
@@ -48,8 +74,7 @@ export default function Todolist(props: TodolistPropsType) {
         addTask(inputValue)
     }
 
-    const todoItems = data.map(i => {
-
+    const todoItems = getFilterTasks.map(i => {
         const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
             changeTaskStatus(i.id, e.currentTarget.checked)
         }
@@ -94,6 +119,7 @@ export default function Todolist(props: TodolistPropsType) {
                     // inputClasses={error ? 'error' : 'input'}
                     inputClasses={'input'}
                     callBack={onEnterHandler}
+                    placeholder={'Add a new task'}
                 />
                 {/*{error && <div className={'error-message'}>{error}</div>}*/}
                 <MultiButton

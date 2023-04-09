@@ -7,11 +7,12 @@ type MultiInputPropsType = {
     setInputValue: (inputValue: string) => void
     inputType?: string
     callBack: () => void
+    placeholder?: string
 }
 
 export const MultiInput: FC<MultiInputPropsType> = (props) => {
 
-    const {inputValue, setInputValue, inputClasses, inputType, callBack, ...restProps} = props
+    const {inputValue, setInputValue, inputClasses, inputType, callBack, placeholder, ...restProps} = props
 
     const onChangeInputValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value)
@@ -31,6 +32,7 @@ export const MultiInput: FC<MultiInputPropsType> = (props) => {
                 value={inputValue}
                 onChange={onChangeInputValueHandler}
                 onKeyPress={onKeyPressHandler}
+                placeholder={placeholder}
             />
         </div>
     );
