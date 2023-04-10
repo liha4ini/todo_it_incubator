@@ -1,18 +1,23 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {motion} from "framer-motion";
-import {FilterValuesType} from "../../App";
+import {FilterValuesType, TodolistsType} from "../../App";
 
 import './Todolist.css';
 import {MultiButton} from "../MultiButton/MultiButton";
 import {MultiInput} from "../MultiInput/MultiInput";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 
 type TodolistPropsType = {
     title: string
     tasks: TasksType[]
-    deleteTask: (id: string) => void
-    addTask: (newTitle: string) => void
-    changeTaskStatus: (taskId: string, checkedValue: boolean) => void
+    deleteTask: (todoID: string, taskID: string) => void
+    addTask: (todoID: string, newTitle: string) => void
+    changeTaskStatus: (todoID: string, taskId: string, checkedValue: boolean) => void
+    todoID: string
+    changeFilter: (todoID: string, value: FilterValuesType) => void
+    todos: TodolistsType[]
+    removeTodolist: (todoID: string) => void
 }
 
 export type TasksType = {
@@ -23,15 +28,22 @@ export type TasksType = {
 
 export default function Todolist(props: TodolistPropsType) {
 
-    const {title, tasks, deleteTask, addTask, changeTaskStatus, ...restProps} = props;
+    const {
+        title,
+        tasks,
+        deleteTask,
+        addTask,
+        changeTaskStatus,
+        changeFilter,
+        todos,
+        todoID,
+        removeTodolist,
+        ...restProps
+    } = props;
 
     const [inputValue, setInputValue] = useState('')
     const [error, setError] = useState<string | null>(null)
-    const [filterTasks, setFilterTasks] = useState<FilterValuesType>('all')
-
-    const changeFilter = (value: FilterValuesType) => {
-        setFilterTasks(value)
-    }
+    // const [filterTasks, setFilterTasks] = useState<FilterValuesType>('all')
 
     // const filteredTasks = () => {
     //     let getFilterTasks = tasks;
@@ -46,23 +58,27 @@ export default function Todolist(props: TodolistPropsType) {
     //     return getFilterTasks
     // }
 
-    let getFilterTasks = tasks;
+    // let getFilterTasks = tasks;
+    //
+    // if (filterTasks === 'completed') {
+    //     getFilterTasks = tasks.filter(i => i.isDone)
+    // }
+    //
+    // if (filterTasks === 'active') {
+    //     getFilterTasks = tasks.filter(i => !i.isDone)
+    // }
+    //
+    // const changeFilter = (value: FilterValuesType) => {
+    //     setFilterTasks(value)
+    // }
 
-    if (filterTasks === 'completed') {
-        getFilterTasks = tasks.filter(i => i.isDone)
-    }
-
-    if (filterTasks === 'active') {
-        getFilterTasks = tasks.filter(i => !i.isDone)
-    }
-
-    const removeTaskHandler = (id: string) => {
-        deleteTask(id)
+    const removeTaskHandler = (todoID: string, taskID: string) => {
+        deleteTask(todoID, taskID)
     }
 
     const addTaskHandler = () => {
         if (inputValue.trim() !== '') {
-            addTask(inputValue)
+            addTask(todoID, inputValue)
             setInputValue('')
         } else {
             setError('Title is required')
@@ -71,12 +87,16 @@ export default function Todolist(props: TodolistPropsType) {
     }
 
     const onEnterHandler = () => {
-        addTask(inputValue)
+        addTask(todoID, inputValue)
     }
 
-    const todoItems = getFilterTasks.map(i => {
+    const removeTodolistHandler = () => {
+        removeTodolist(todoID)
+    }
+
+    const todoItems = tasks.map(i => {
         const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            changeTaskStatus(i.id, e.currentTarget.checked)
+            changeTaskStatus(todoID, i.id, e.currentTarget.checked)
         }
         return (
             <li key={i.id} className={i.isDone ? 'task_item is_done' : 'task_item'}>
@@ -86,7 +106,7 @@ export default function Todolist(props: TodolistPropsType) {
                        onChange={changeTaskStatusHandler}
                 />
                 <span>{i.title}</span>
-                <button onClick={() => removeTaskHandler(i.id)}>Del</button>
+                <button onClick={() => removeTaskHandler(props.todoID, i.id)}>Del</button>
             </li>
         )
     })
@@ -97,6 +117,7 @@ export default function Todolist(props: TodolistPropsType) {
 
         >
             <motion.div
+                onClick={removeTodolistHandler}
                 className='title'
                 initial={{
                     y: -300,
@@ -111,7 +132,12 @@ export default function Todolist(props: TodolistPropsType) {
                 }}
             >
                 {title}
+                <DeleteForeverIcon
+                    className='delete_icon'
+                />
             </motion.div>
+
+
             <div className='input_block'>
                 <MultiInput
                     inputValue={inputValue}
@@ -147,20 +173,23 @@ export default function Todolist(props: TodolistPropsType) {
                 }}
             >
                 <MultiButton
-                    callBack={() => changeFilter('all')}
-                    className={filterTasks === 'all' ? 'active_filter_button' : 'filterButton'}
+                    callBack={() => changeFilter(props.todoID, 'all')}
+                    className={'filterButton'}
+                    // className={todos.filter === 'all' ? 'active_filter_button' : 'filterButton'}
                 >
                     All
                 </MultiButton>
                 <MultiButton
-                    callBack={() => changeFilter('active')}
-                    className={filterTasks === 'active' ? 'active_filter_button' : 'filterButton'}
+                    callBack={() => changeFilter(props.todoID, 'active')}
+                    className={'filterButton'}
+                    // className={filterTasks === 'active' ? 'active_filter_button' : 'filterButton'}
                 >
                     Active
                 </MultiButton>
                 <MultiButton
-                    callBack={() => changeFilter('completed')}
-                    className={filterTasks === 'completed' ? 'active_filter_button' : 'filterButton'}
+                    callBack={() => changeFilter(props.todoID, 'completed')}
+                    className={'filterButton'}
+                    // className={filterTasks === 'completed' ? 'active_filter_button' : 'filterButton'}
                 >
                     Completed
                 </MultiButton>
